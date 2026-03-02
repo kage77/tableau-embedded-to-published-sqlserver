@@ -2,6 +2,7 @@
 
 Open-source Python utility designed to migrate Tableau workbooks from **embedded SQL Server connections** to **governed published data sources**.
 
+![Migration Flow](images/TableauMigrator.png)
 ---
 
 ## Why this was created
