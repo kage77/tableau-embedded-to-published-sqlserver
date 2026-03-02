@@ -99,6 +99,35 @@ At a high level, the migration process works like this:
 
 ---
 
+### Workflow diagram
+
+```mermaid
+sequenceDiagram
+  participant U as Operator
+  participant TSC as Tableau REST client
+  participant FS as Local filesystem
+  participant XML as TWB XML editor
+  participant TC as Tableau Cloud
+
+  U->>TSC: Sign in (PAT)
+  U->>TSC: Select workbook(s)
+  TSC->>TC: Download TWBX
+  TC-->>FS: TWBX saved locally
+  FS->>FS: Unzip TWBX
+  FS->>XML: Load TWB XML
+  XML->>XML: Discover embedded datasources + extracts
+  XML->>FS: Emit TDS + package extracts
+  FS->>TSC: Publish datasource(s)
+  TSC->>TC: Create/overwrite published datasources
+  XML->>XML: Rewrite connection to sqlproxy + repository-location
+  XML->>FS: Save TWB + remove embedded extracts
+  FS->>FS: Re-zip TWBX
+  FS->>TSC: Publish updated TWBX
+  TSC->>TC: Overwrite workbook
+  TSC->>TC: Copy extract refresh schedule to new datasources
+```
+---
+
 ## Repository structure
 
 ```
